@@ -1,0 +1,10 @@
+{
+  "name": "torre-stand",
+  "version": "1.0.0",
+  "description": "Стенд расчёта коммунальных услуг TOR'RE Astana — локальная база и интерфейс оператора",
+  "private": true,
+  "scripts": {
+    "start": "node server/index.js",
+    "check": "node tests/check.js"
+  }
+}

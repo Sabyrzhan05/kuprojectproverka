@@ -1,0 +1,790 @@
+/* ====================================================================================================
+ * Дизайн-система пульта стенда расчёта коммунальных услуг TOR'RE Astana — токены.
+ * Источник — public/index.html (версия 06.10.2026): стили в <style> (строки 4–481), разметка и стили,
+ * которые скрипт задаёт строками (style="…", style.cssText). «Lnnn» — номер строки public/index.html.
+ * «Р…» — пункт раздела «Расхождения — решить заказчику» в design/DESIGN.md: где одно и то же задано по-разному,
+ * оставлены оба значения, выбор не сделан.
+ * Те же значения — design/tokens.ts; описание интерфейса — design/DESIGN.md.
+ * ==================================================================================================== */
+
+:root{
+
+  /* ========== color · Цвета =========================================================================== */
+
+  /* --- Текст --- */
+  --color-text-primary:    #1a1a1a;                             /* основной текст · пульт: --ink (L8) */
+  --color-text-secondary:  #5f5f5f;                             /* подписи, вторичный текст · --ink2 (L8) */
+  --color-text-muted:      #8c8c8c;                             /* приглушённый: прочерки, единицы, подсказки, неактивное · --ink3 (L8) */
+  --color-text-inverse:    #fff;                                /* белый текст на залитом фоне: «из доли», «Реестр: N новых», ✓ шага, включённый ▾, заголовок отдела (L44, L163, L181, L290, L310, L335, L7222) */
+  --color-text-link:       #1f4e96;                             /* ссылка, номер помещения, рамка фокуса · --link (L12; числом — L142) · Р10, Р13 */
+
+  /* --- Линии --- */
+  --color-line-default:    #bdbdbd;                             /* рамки блоков, полей, кнопок, нижняя линия шапки таблицы · --line (L8) */
+  --color-line-light:      #d4d4d4;                             /* линии сетки таблиц, разделители внутри блоков · --line2 (L8) */
+  --color-line-lighter:    #e3e3e3;                             /* разделитель строк «Договоры за месяц» · --line3 (L8, L460) */
+  --color-line-strong:     #9e9e9e;                             /* рамка диалогов, шторки, кнопки «Выбрать файл…», низ шапки окна · --line-hard (L8) */
+  --color-line-badge-off:  #c8c8c8;                             /* рамка плашки «не участвует в расчётах» (L292) · вне палитры, Р18 */
+
+  /* --- Фоны --- */
+  --color-bg-page:            #ffffff;                          /* поле страницы · --bg (L9); то же значение записано числом #fff в 30+ местах (L22, L238, L244, L395 …) */
+  --color-bg-sunken:          #f4f4f4;                          /* шапки таблиц, наведение, заблокированные поля, «Итого» · --sunk (L9) */
+  --color-bg-panel:           #f2f2f2;                          /* панель разделов, полоса окон, статус-бар, .note · --panel (L9) */
+  --color-bg-panel-2:         #e9e9e9;                          /* верхняя панель, активный отбор, наведение в разделах, шапка столбца с фильтром · --panel2 (L9) */
+  --color-bg-row-hover:       #f7f7f7;                          /* наведение на строку пульта (L266) · Р12, Р18 */
+  --color-bg-row-sub:         #fafafa;                          /* подстроки поделённого месяца /1, /2 (L268–269) · Р18 */
+  --color-bg-soft:            #fbfbfb;                          /* дерево отчётов, плитки (L329, L360) · Р18 */
+  --color-bg-note-neutral:    #fbfbf9;                          /* поясняющие блоки в отчёте и «Истории» (L2679, L7643) · Р18 */
+  --color-bg-row-note:        #fbfbf8;                          /* строка «своего договора нет / действующего договора нет» в форме (L8717, L8722) · Р18 */
+  --color-bg-block-neutral:   #f6f6f4;                          /* блок «Показания приборов» в квитанции, прибор вне периода (L7289, L8480) · Р18 */
+  --color-bg-row-closed:      #f2f2f0;                          /* закрытый договор разграничения в форме (L8671) · Р18 */
+  --color-bg-error-screen:    #f4f4f0;                          /* экран «Стенд не видит базу данных» (L9739) · Р18 */
+  --color-bg-badge-off:       #eee;                             /* плашка «не участвует в расчётах» (L292) · Р18 */
+  --color-bg-overlay:         rgba(0,0,0,.18);                  /* затемнение под окном «Оставить изменения?» (L8280) */
+  --color-bg-loading-banner:  #2f4f3f;                          /* полоса «Загружаю базу…» (L9731) */
+
+  /* --- Акцент (зелёный) --- */
+  --color-accent-default:             #2e6b4f;                  /* ссылка-переход, «действует», рамка коммунальной квитанции, активная часть месяца в «Квитанциях» · --acc (L10) · Р9, Р10 */
+  --color-accent-dark:                #245640;                  /* рамка активной части месяца в «Квитанциях»; фактический цвет var(--acc-d,#2f6cb5) · --acc-d (L10) · Р11 */
+  --color-accent-soft:                #edf4ef;                  /* текущий месяц в «Истории», действующий договор, «Итого КУ» формы, «нынешний собственник» · --acc-s (L10) · Р17 */
+  --color-accent-soft-alt:            #e8f5e9;                  /* блок «ЭК берёт на себя из ОДН» в «Настройки месяца» (L2224) · Р17 */
+  --color-accent-soft-current-total:  #d6ecd6;                  /* «ИТОГО КУ» выбранного месяца в «Истории» (L7664) · Р17 */
+
+  /* --- Состояния: ошибка / предупреждение / информация / готово --- */
+  --color-status-ok:                    #2e7d32;                /* «сделано / сходится»: шаг ✓, плитка ✓, «сохранено», «✓ проверено», «введены» · --ok (L11) · Р9 */
+  --color-status-bad:                   #c62828;                /* только проблемы: ошибки, «нужно заполнить», «акта НЕТ», отрицательный ОДН · --bad (L11) */
+  --color-status-bad-soft:              #fbeeee;                /* фон «нужно заполнить», наведение на ✕ окна · --bad-s (L11) · Р14 */
+  --color-status-bad-soft-odn:          #fde7e9;                /* строки «⚠ ОДН … отрицательный» в «Настройки месяца» (L2227–2231) · Р14 */
+  --color-status-bad-soft-done:         #fbeaea;                /* сообщение «Внесено…» после сверки (L138) · Р14 */
+  --color-status-bad-soft-deleted:      #fdf3f2;                /* блок «Помечено на удаление» в форме (L341) · Р14 */
+  --color-status-bad-soft-fallback:     #fbe9e7;                /* запасное значение var(--bad-s,#fbe9e7) в импорте — не применяется (L5731) · Р14 */
+  --color-status-bad-border:            #dcc3c1;                /* рамка блоков «Смена собственника в периоде» (L7217, L8427) · Р14 */
+  --color-status-bad-border-done:       #e0a6a6;                /* рамка сообщения «Внесено…» (L138) · Р14 */
+  --color-status-bad-stripe-done:       #c62828;                /* левая полоса 4px сообщения «Внесено…» — то же, что bad, записано числом (L138) */
+  --color-status-warn:                  #8a6d3b;                /* предупреждение: «скопированы — проверьте», «≠ тарифов стенда», «не трогаем» · --warn (L11) */
+  --color-status-warn-soft:             #fbf6ea;                /* фон предупреждений, черновик тарифа, напоминание о закрытии · --warn-s (L11) · Р15 */
+  --color-status-warn-soft-history:     #fff9e6;                /* «загружен только один период» в «Истории» (L7552) · Р15 */
+  --color-status-warn-border:           #d9c48a;                /* рамка жёлтых блоков (L133, L2977, L3737, L5719, L5728, L6206, L8395, L8439, L8622) · Р15 */
+  --color-status-warn-border-alt:       #e0d3b8;                /* рамка жёлтых блоков, второй вариант (L6022, L6394, L7552, L8738) · Р15 */
+  --color-status-warn-border-reminder:  #c9a227;                /* рамка 2px напоминания «Пора закрыть период» (L6040) · Р15 */
+  --color-status-info:                  #3f5a8f;                /* «спит», проставлено автоматически, корректировки, «платит УК» в квитанции · --info (L11) · Р19 */
+  --color-status-info-soft:             #edf1f8;                /* фон информационных блоков, закрытый месяц, автодата · --info-s (L11) · Р16 */
+  --color-status-info-soft-alt:         #f3f6fa;                /* блок «Договоры разграничения» в форме (L8640) · Р16 */
+  --color-status-info-border:           #a9bcd4;                /* рамка голубых блоков (L6007, L6382, L6385, L6851, L7144, L8640) · Р16 */
+  --color-status-autofill-border:       #8fa8cf;                /* рамка ячейки, проставленной автоматически, .autofill (L427) · Р20 */
+
+  /* --- Поля ввода месяца (жёлтые) --- */
+  --color-input-bg:               #fffbea;                      /* поле ввода в шапке месяца · --in (L12) */
+  --color-input-border:           #e0cd9a;                      /* рамка поля ввода в шапке · --in-l (L12) */
+  --color-input-bg-focus:         #fff4c2;                      /* поле в фокусе · --in-f (L12) */
+  --color-input-checkbox-accent:  #6a9f6a;                      /* галочка «Учит.» в «Доходные», уменьшена до 85% (L1148) · Р35 */
+
+  /* --- Текущее / выбранное --- */
+  --color-current-bg:                #fff7cc;                   /* выбранная строка пульта, активный отчёт, плашка месяца · --cur (L12) · Р12 */
+  --color-current-border:            #e6d58a;                   /* левая полоса активного отчёта, рамка плашки месяца · --cur-l (L12) */
+  --color-current-dialog-row-bg:     #dde8f6;                   /* выбранная строка в окне внесения разграничения (L114) · Р12 */
+  --color-current-dialog-row-hover:  #f4f7fb;                   /* наведение на строку в окне внесения разграничения (L110) · Р12 */
+  --color-current-go-highlight:      #fff1b8;                   /* подсветка строки после перехода по ссылке, 2,6 с (L171) */
+
+  /* --- Кнопка по умолчанию (жёлтая) --- */
+  --color-default-bg:        #f7e7a8;                           /* button.pri, шаг «предупреждение» · --def (L12) */
+  --color-default-border:    #d9c36a;                           /* рамка button.pri, левая полоса активного раздела · --def-l (L12) */
+  --color-default-bg-hover:  #f2dd90;                           /* button.pri при наведении (L74) */
+
+  /* --- Плашки «Поставщику платит» и «Квитанция» --- */
+  --color-badge-uk-text:           #0b3a6f;                     /* «в счёт УК» / «платит УК» — текст (L284) */
+  --color-badge-uk-bg:             #c7dcf6;                     /* «в счёт УК» — фон (L284) */
+  --color-badge-uk-border:         #2f6cb5;                     /* «в счёт УК» — рамка 2px (L284); та же рамка у «через УК» (L289) */
+  --color-badge-wait-stripe:       #e0a800;                     /* «в счёт УК» при договоре без акта — левая полоса 5px (L285) */
+  --color-badge-owner-text:        #16553b;                     /* «собственник» — текст (L286) */
+  --color-badge-owner-bg:          #d5e9dd;                     /* «собственник» — фон (L286) · Р17 */
+  --color-badge-owner-border:      #7fb69a;                     /* «собственник» — рамка (L286) */
+  --color-badge-sleep-text:        #1a6b8c;                     /* «УК · спит» — текст (L287) · Р19 */
+  --color-badge-sleep-bg:          #e2f2f8;                     /* «УК · спит» — фон (L287) */
+  --color-badge-sleep-border:      #a3d0e2;                     /* «УК · спит» — рамка (L287) */
+  --color-badge-part-text:         #7a5c00;                     /* «частично», «2 квитанции» — текст (L288) */
+  --color-badge-part-bg:           #fbf1d8;                     /* «частично», «2 квитанции» — фон (L288) */
+  --color-badge-part-border:       #e0cd9a;                     /* «частично», «2 квитанции» — рамка (L288) */
+  --color-badge-hand-text:         #16553b;                     /* «через УК» (доля счёта поставщика) — текст (L289) */
+  --color-badge-hand-bg:           #d5e9dd;                     /* «через УК» — фон (L289) */
+  --color-badge-hand-border:       #2f6cb5;                     /* «через УК» — рамка 2px (L289) */
+  --color-badge-deduction-text:    #fff;                        /* «из доли» — текст (L290) */
+  --color-badge-deduction-bg:      #85561c;                     /* «из доли» — залитая коричневая (L290) */
+  --color-badge-deduction-border:  #6b4412;                     /* «из доли» — рамка (L290) */
+  --color-badge-no-act-text:       #7a5300;                     /* «акта НЕТ» — текст (L291) */
+  --color-badge-no-act-bg:         #fdeec2;                     /* «акта НЕТ» — фон (L291) */
+  --color-badge-no-act-border:     #d9b64d;                     /* «акта НЕТ» — рамка (L291) */
+  --color-badge-off-text:          #8c8c8c;                     /* «не участвует в расчётах» — текст = text.muted (L292) */
+  --color-badge-off-bg:            #eee;                        /* «не участвует в расчётах» — фон (L292) · Р18 */
+  --color-badge-off-border:        #c8c8c8;                     /* «не участвует в расчётах» — рамка (L292) · Р18 */
+  --color-badge-note-text:         #1a6b8c;                     /* строка под плашкой «+ счёт поставщика» / «+ доля счёта поставщика», .pbnote (L293) · Р19 */
+  --color-badge-filter-text:       #7a5c00;                     /* пилюля активного отбора в отчётах .pill.f — текст (L357) */
+  --color-badge-filter-bg:         #fdf2cc;                     /* пилюля активного отбора — фон (L357) */
+  --color-badge-filter-border:     #d9b93c;                     /* пилюля активного отбора — рамка (L357) */
+
+  /* --- Собственники в «Истории помещения» --- */
+  --color-owner-prev-text:    #7a5c00;                          /* «прежний собственник» — текст метки и ФИО (L436, L443) */
+  --color-owner-prev-bg:      #fbf1d8;                          /* «прежний собственник» — фон метки (L436) */
+  --color-owner-prev-border:  #e0cd9a;                          /* «прежний собственник» — рамка метки (L436) */
+  --color-owner-prev-row-bg:  #faf7f0;                          /* строка прежнего собственника (L433) */
+  --color-owner-prev-line:    #d8bf78;                          /* полоса владения прежнего, 3px снизу (L440, L7648) */
+  --color-owner-cur-text:     #16553b;                          /* «нынешний собственник» — текст метки и ФИО (L437, L444) */
+  --color-owner-cur-bg:       #d5e9dd;                          /* «нынешний собственник» — фон метки (L437) */
+  --color-owner-cur-border:   #7fb69a;                          /* «нынешний собственник» — рамка метки (L437) */
+  --color-owner-cur-line:     #7fb69a;                          /* полоса владения нынешнего, 3px снизу (L441, L7647) */
+
+  /* --- Кнопка фильтра ▾ в шапке столбца --- */
+  --color-filter-button-text:          #1f4e96;                 /* стрелка (L308) */
+  --color-filter-button-bg:            #e3ebf6;                 /* фон (L308) */
+  --color-filter-button-border:        #8fa9cb;                 /* рамка (L308) */
+  --color-filter-button-hover-bg:      #c9daf0;                 /* наведение — фон (L309) */
+  --color-filter-button-hover-border:  #1f4e96;                 /* наведение — рамка (L309) */
+  --color-filter-button-hover-text:    #123a73;                 /* наведение — стрелка (L309) */
+  --color-filter-button-on-bg:         #1f4e96;                 /* фильтр включён — залитая синяя (L310) */
+  --color-filter-button-on-text:       #fff;                    /* фильтр включён — белая стрелка (L310) */
+
+  /* --- Окна --- */
+  --color-window-bar-from:         #dfe3e8;                     /* шапка окна, градиент сверху (L397) */
+  --color-window-bar-to:           #d3d8de;                     /* шапка окна, градиент снизу (L397) */
+  --color-window-bar-top-from:     #d6dbe2;                     /* шапка окна, поднятого последним, сверху (L403) */
+  --color-window-bar-top-to:       #c7cdd6;                     /* шапка окна, поднятого последним, снизу (L403) */
+  --color-window-button-hover-bg:  rgba(255,255,255,.75);       /* кнопки — ▢ в шапке при наведении (L406) */
+  --color-window-grip-dots:        #5f5f5f;                     /* точки «ручки» слева в шапке = text.secondary, прозрачность .55 (L400–401) */
+  --color-window-resize-mark:      #8c8c8c;                     /* уголок растягивания справа внизу = text.muted, прозрачность .6 (L417) */
+
+  /* --- Шторка шапки месяца --- */
+  --color-curtain-from:         #e3e8ef;                        /* градиент сверху (L158) */
+  --color-curtain-to:           #d2d9e3;                        /* градиент снизу (L158) */
+  --color-curtain-hover-from:   #d8dfe8;                        /* наведение, сверху (L160) */
+  --color-curtain-hover-to:     #c5cedb;                        /* наведение, снизу (L160) */
+  --color-curtain-triangle-bg:  #1a1a1a;                        /* чёрный квадрат ▲/▼ = text.primary (L163) */
+
+  /* --- Кнопка «Выбрать файл… / Сверить с файлом…» --- */
+  --color-file-button-from:      #fff;                          /* градиент сверху (L130) */
+  --color-file-button-to:        #eceff3;                       /* градиент снизу (L130) */
+  --color-file-button-hover-bg:  #e6eaf0;                       /* наведение (L131) */
+
+  /* --- Кнопка «Копия на Google Диск» --- */
+  --color-backup-button-bg:              #e7f0fb;               /* фон (L40) */
+  --color-backup-button-hover-bg:        #d6e6f8;               /* наведение (L41) */
+  --color-backup-button-text:            #1f4f86;               /* текст (L40) */
+  --color-backup-button-border:          #245640;               /* рамка — фактическая: var(--acc-d,#2f6cb5) берёт --acc-d (L40) · Р11 */
+  --color-backup-button-border-planned:  #2f6cb5;               /* рамка — запасное значение, не применяется (L40, L342) · Р11 */
+
+  /* --- Вкладки формы помещения --- */
+  --color-tabs-strip-bg:      #eef2f7;                          /* полоса вкладок (L464) */
+  --color-tabs-strip-line:    #4a6fa0;                          /* линия под полосой 2px, рамка и верхняя черта 3px открытой вкладки (L464, L468) */
+  --color-tabs-tab-bg:        #dbe4ef;                          /* закрытая вкладка (L465) */
+  --color-tabs-tab-text:      #24466e;                          /* подпись вкладки; заголовки групп «Договоры за месяц» (L465, L459) */
+  --color-tabs-tab-border:    #b3c3d8;                          /* рамка закрытой вкладки (L466) */
+  --color-tabs-tab-hover-bg:  #c9d7e8;                          /* наведение (L467) */
+  --color-tabs-counter-text:  #5d7594;                          /* счётчик в подписи вкладки (L469) */
+
+  /* --- Дерево отчётов: отделы и разделы --- */
+  --color-report-tree-dept-accounting:          #3d6799;        /* заголовок отдела «Бухгалтерия» (L335) */
+  --color-report-tree-dept-owners:              #6f46a3;        /* заголовок отдела «Работа с собственниками» (L337) */
+  --color-report-tree-dept-common:              #6b7380;        /* заголовок «Общее» (L337) */
+  --color-report-tree-group-accounting-text:    #24466e;        /* раздел бухгалтерии — текст (L331) */
+  --color-report-tree-group-accounting-bg:      #dfe7f1;        /* раздел бухгалтерии — фон (L331) */
+  --color-report-tree-group-accounting-border:  #bccadb;        /* раздел бухгалтерии — линии сверху и снизу (L332) */
+  --color-report-tree-group-accounting-stripe:  #4a6fa0;        /* раздел бухгалтерии — полоса слева 3px (L332) */
+  --color-report-tree-group-owners-text:        #5a2f86;        /* раздел работы с собственниками — текст (L344) */
+  --color-report-tree-group-owners-bg:          #ece3f6;        /* раздел работы с собственниками — фон (L344) */
+  --color-report-tree-group-owners-border:      #cdb8e3;        /* раздел работы с собственниками — линии (L344) */
+  --color-report-tree-group-owners-stripe:      #7b4fb0;        /* раздел работы с собственниками — полоса слева (L344) */
+  --color-report-tree-group-common-text:        #4a5260;        /* раздел «Общее» — текст (L345) */
+  --color-report-tree-group-common-bg:          #eceef1;        /* раздел «Общее» — фон (L345) */
+  --color-report-tree-group-common-border:      #d3d7de;        /* раздел «Общее» — линии (L345) */
+  --color-report-tree-group-common-stripe:      #8a93a0;        /* раздел «Общее» — полоса слева (L345) */
+  --color-report-tree-row-stripe-accounting:    #c9d6e8;        /* пункт бухгалтерии — тонкая полоса слева (L346) */
+  --color-report-tree-row-stripe-owners:        #d9c8ee;        /* пункт работы с собственниками — полоса слева (L346) */
+  --color-report-tree-row-stripe-common:        #dde0e5;        /* пункт «Общее» — полоса слева (L346) */
+
+  /* --- Сверки с файлом --- */
+  --color-sync-ok-border:       #9cc3a9;                        /* сводка «совпадает» — рамка, фон accent.soft (L134) */
+  --color-sync-changed-border:  #d9c48a;                        /* сводка «есть изменения» — рамка, фон status.warn-soft (L133) */
+
+  /* --- Вложения договоров --- */
+  --color-files-drop-border:  #1f4e96;                          /* зона перетаскивания файлов — пунктир 2px; подсветка раздела «Акт» (L112, L120) */
+  --color-files-drop-bg:      #f1f6fd;                          /* зона перетаскивания — фон (L120) */
+
+  /* --- Шкала тарифов в «Настройки месяца» (SVG) --- */
+  --color-timeline-tick:              #4b5c4f;                  /* числа дней (L1108) */
+  --color-timeline-label:             #1f2a22;                  /* названия услуг и тарифы (L1110, L1114) */
+  --color-timeline-segment-1-fill:    #dcece3;                  /* первый отрезок тарифа — заливка; рамка accent.default (L1113) */
+  --color-timeline-segment-2-fill:    #fbf3d9;                  /* следующий отрезок — заливка (L1113) */
+  --color-timeline-segment-2-stroke:  #93720c;                  /* следующий отрезок — рамка (L1113) */
+
+  /* --- Печать отчёта (отдельное окно) --- */
+  --color-print-text:          #000;                            /* текст (L3934) */
+  --color-print-border:        #999;                            /* линии таблиц, плиток, пилюль (L3935–3939) */
+  --color-print-head-bg:       #eee;                            /* шапка таблицы, заголовок группы (L3935, L3938) */
+  --color-print-total-bg:      #f3f3f3;                         /* строка «Итого» (L3936) */
+  --color-print-muted:         #555;                            /* подписи плиток, примечания (L3937–3939) */
+  --color-print-badge-border:  #777;                            /* рамка плашки (L3939) */
+
+  /* --- Цвета теней --- */
+  --color-shadow-menu:      rgba(0,0,0,.15);                    /* меню «Ещё ▾» (L82) · Р25 */
+  --color-shadow-popup:     rgba(0,0,0,.18);                    /* списки, фильтры, окна, напоминание (L298, L313, L395, L6040) · Р25 */
+  --color-shadow-dialog:    rgba(0,0,0,.25);                    /* диалоги .reg-dlg (L92) · Р25 */
+  --color-shadow-modal:     rgba(0,0,0,.28);                    /* «Оставить изменения?» (L8281) · Р25 */
+  --color-shadow-hairline:  rgba(0,0,0,.06);                    /* кнопка фильтра ▾ (L308) */
+
+  /* ========== font · Шрифт =========================================================================== */
+
+  /* --- Семейства --- */
+  --font-family-base:             Arial, "Segoe UI", sans-serif; /* весь пульт (L16, L62) */
+  --font-family-mono:             Consolas, monospace;          /* цепочка расчёта .chain (L388) · Р31 */
+  --font-family-mono-inline:      monospace;                    /* код квитанции «КВ-…», «ЭК-…» (L6900, L7252, L7275, L7394) · Р31 */
+  --font-family-timeline-label:   "Segoe UI";                   /* подписи шкалы тарифов SVG (L1110) · Р31 */
+  --font-family-timeline-number:  Consolas;                     /* числа шкалы тарифов SVG (L1108, L1114) · Р31 */
+  --font-family-print:            Arial, sans-serif;            /* печать отчёта (L3934) */
+
+  /* --- Размеры — шкала (все, что есть в пульте) --- */
+  --font-size-8:     8px;                                       /* числа шкалы тарифов (L1108, L1114) */
+  --font-size-9:     9px;                                       /* ▾ в клетке «Поставщику платит» (L280); «начало / конец дней в счёт УК» (L8488, L8490); подписи шкалы (L1110) */
+  --font-size-9-5:   9.5px;                                     /* «объём × тариф» под суммой (L9415 mulNote, L9422), мелкие пояснения в форме и квитанции (54 места); печать — подписи (L3937) */
+  --font-size-10:    10px;                                      /* .pbnote, .autonote, .reg-ct, ▲ шторки (L45, L163, L293, L428); 35 мест в шаблонах */
+  --font-size-10-5:  10.5px;                                    /* плашки, метки, группы дерева отчётов, плитки (подпись), .chain (L283, L331, L363, L388, L435, L449); 87 мест в шаблонах */
+  --font-size-11:    11px;                                      /* .lead, шаг (номер, состояние), заголовок групп шапки, table.r th, тело окон (L20, L179, L183, L198, L390, L623); 86 мест в шаблонах */
+  --font-size-11-5:  11.5px;                                    /* мелкий текст .mini, статус-бар, кнопка .sm, table.r, пилюли · --fs-s (L13, L78, L389, L421) */
+  --font-size-12:    12px;                                      /* .note, фильтры, шапка таблицы пульта, меню, таблица отчёта (L87, L230, L240, L298, L366) */
+  --font-size-12-5:  12.5px;                                    /* кнопки, разделы, вкладки, диалоги, таблица пульта · --fs-t (L13, L70, L51, L56, L92, L239) */
+  --font-size-13:    13px;                                      /* шторка, заголовок окна, заголовок группы настроек (L159, L402, L476) */
+  --font-size-13-5:  13.5px;                                    /* основной текст страницы, номер помещения · --fs (L13, L16, L254) */
+  --font-size-14:    14px;                                      /* ‹ › месяца, × вкладки окна, кнопки окна, заголовок диалога и отчёта (L59, L65, L93, L355, L405) */
+  --font-size-14-5:  14.5px;                                    /* сводка сверки (L135) */
+  --font-size-15:    15px;                                      /* значение плитки (L362) */
+  --font-size-16:    16px;                                      /* крупное число паспорта, значки свёрнутой панели разделов (L36, L453); заголовок экрана ошибки (L9743) */
+  --font-size-20:    20px;                                      /* заголовок «Расчёт КУ за …» (L62) */
+
+  /* --- Размеры — по назначению --- */
+  --font-role-body:                  13.5px;                    /* основной текст · --fs (L13) */
+  --font-role-table:                 12.5px;                    /* таблица пульта · --fs-t (L239) */
+  --font-role-mini:                  11.5px;                    /* мелкий текст .mini · --fs-s (L19) */
+  --font-role-control:               12.5px;                    /* кнопки, вкладки, пункты разделов, поля шапки (L70, L51, L56, L185) */
+  --font-role-control-sm:            11.5px;                    /* кнопка .sm (L78) */
+  --font-role-table-head:            12px;                      /* шапка таблицы пульта (L240) · Р4 */
+  --font-role-report-table-planned:  12px;                      /* таблица отчёта — по правилу table.rt (L366); перекрыто · Р4, Р39 */
+  --font-role-report-table:          11.5px;                    /* таблица отчёта — фактически: правило table.r (L389) той же силы стоит ниже; в группах .grp — 12px (L380) · Р4, Р39 */
+  --font-role-report-head-planned:   11.5px;                    /* шапка таблицы отчёта, жирная — по правилу table.rt th (L367); перекрыто · Р4, Р39 */
+  --font-role-report-head:           11px;                      /* шапка таблицы отчёта — фактически 11px обычным: правило table.r th (L390) стоит ниже · Р4, Р39 */
+  --font-role-ref-table:             11.5px;                    /* таблица table.r (L389) · Р4 */
+  --font-role-ref-head:              11px;                      /* шапка table.r (L390) · Р4 */
+  --font-role-sync-table:            12px;                      /* таблица сверки table.sync (L143) · Р4 */
+  --font-role-window-body:           11px;                      /* тело окон импорта, закрытия, корректировки; поля и таблицы формы (L623, L637, L651, L8311) · Р5 */
+  --font-role-dialog-body:           12.5px;                    /* диалоги .reg-dlg, «Оставить изменения?» (L92, L8283) · Р5 */
+  --font-role-badge:                 10.5px;                    /* плашка .pb, метка .own-tag (L283, L435) */
+  --font-role-note-under-badge:      10px;                      /* строка под плашкой .pbnote (L293) */
+  --font-role-mul-note:              9.5px;                     /* «объём × тариф» под суммой (L9415) */
+  --font-role-page-title:            20px;                      /* заголовок формы (L62) */
+  --font-role-window-title:          13px;                      /* название в шапке окна (L402) */
+  --font-role-group-title:           13px;                      /* заголовок группы .grp .gt, жирный — фактически, вторая запись (L476) · Р22 */
+  --font-role-group-title-planned:   12px;                      /* заголовок группы .grp .gt — первая запись (L378), перекрыта · Р22 */
+  --font-role-dialog-title:          14px;                      /* заголовок диалога .rd-h, заголовок отчёта .rh b (L93, L355) */
+  --font-role-unit-number:           13.5px;                    /* номер помещения в пульте (L254) */
+  --font-role-tile-value:            15px;                      /* значение плитки (L362) */
+  --font-role-big-number:            16px;                      /* крупные суммы паспорта (L453) */
+  --font-role-summary:               14.5px;                    /* сводка сверки (L135) */
+
+  /* --- Насыщенность --- */
+  --font-weight-regular:   400;                                 /* обычный */
+  --font-weight-semibold:  600;                                 /* полужирный: подписи групп, «подтверждено», вкладки формы (L97, L465) */
+  --font-weight-bold:      700;                                 /* жирный: заголовки, итоги, активные пункты, плашки */
+
+  /* --- Межстрочный интервал --- */
+  --font-line-height-tight:            1;                       /* кнопки, заголовок формы, ▾, × (L62, L70, L307, L405) */
+  --font-line-height-unit-name:        1.1;                     /* название под номером помещения, ФИО при смене (L255, L2031) */
+  --font-line-height-table-head:       1.15;                    /* шапка таблицы пульта, «объём × тариф» (L240, L9415) */
+  --font-line-height-compact:          1.2;                     /* пункт разделов, шаги, .pbnote (L51, L182, L293) */
+  --font-line-height-menu:             1.25;                    /* пункты меню, фильтра, .reg-ct (L45, L299, L316) */
+  --font-line-height-base:             1.3;                     /* основной текст, дерево отчётов, подпись под таблицей (L16, L347, L385) */
+  --font-line-height-note:             1.35;                    /* .note, .chain (L87, L388) */
+  --font-line-height-dialog-text:      1.45;                    /* текст «Вы уверены?» (L3684) */
+  --font-line-height-modal-text:       1.5;                     /* текст «Оставить изменения?», «Каким должен быть файл» (L8283, L2799) */
+  --font-line-height-error-screen:     1.6;                     /* экран «Стенд не видит базу данных» (L9740) */
+  --font-line-height-badge:            13px;                    /* плашка .pb (L283) */
+  --font-line-height-pay-cell:         18px;                    /* строка «Поставщику платит» .pay (L276) */
+  --font-line-height-stack-row:        20px;                    /* строки приборов в клетке пульта (L1843, L1845), «акта НЕТ» (L1708) · Р6 */
+  --font-line-height-stack-row-dates:  19px;                    /* строки «даты — состояние» в клетке пульта (L1699) · Р6 */
+
+  /* --- Межбуквенный интервал --- */
+  --font-letter-spacing-badge-uk:      .2px;                    /* плашка «в счёт УК», заголовок отдела (L284, L335) */
+  --font-letter-spacing-caption:       .3px;                    /* подпись колонки паспорта ПРОПИСНЫМИ (L449) */
+  --font-letter-spacing-month-group:   .4px;                    /* группа «Договоры за месяц» ПРОПИСНЫМИ (L459) */
+  --font-letter-spacing-report-group:  .5px;                    /* раздел дерева отчётов ПРОПИСНЫМИ (L331) */
+
+  /* --- Начертание цифр --- */
+  --font-feature-numeric:  tabular-nums;                        /* числа одной ширины: .num, .num-in, суммы, итоги (L17, L25) */
+
+  /* ========== size · Размеры ========================================================================= */
+
+  /* --- Каркас главного экрана --- */
+  --size-layout-topbar-height:            32px;                 /* верхняя панель .top (L29) */
+  --size-layout-sections-width:           152px;                /* панель разделов .sec (L32) */
+  --size-layout-sections-width-narrow:    42px;                 /* панель разделов, свёрнутая в значки ☰ (L33) */
+  --size-layout-section-item-min-height:  30px;                 /* пункт раздела (L51) */
+  --size-layout-section-item-border:      3px;                  /* левая полоса активного пункта (L51) */
+  --size-layout-tabs-strip-height:        30px;                 /* полоса открытых окон .wins (L55) */
+  --size-layout-tabs-strip-tab-offset:    4px;                  /* отступ вкладки окна сверху (L56) */
+  --size-layout-title-row-height:         34px;                 /* строка «Расчёт КУ за …» .ttl (L61) */
+  --size-layout-command-bar-height:       38px;                 /* командная панель .cmd (L68) */
+  --size-layout-search-width:             270px;                /* поле поиска .srch (L79) */
+  --size-layout-search-height:            26px;                 /* поле поиска (L79) */
+  --size-layout-period-height:            26px;                 /* переключатель месяца ‹ › (L64) */
+  --size-layout-period-button-height:     24px;                 /* кнопки ‹ › (L65) */
+  --size-layout-period-input-width:       148px;                /* поле месяца (L67) */
+  --size-layout-filter-row-min-height:    32px;                 /* строка отбора .flt (L228) */
+  --size-layout-filter-chip-height:       24px;                 /* кнопка быстрого отбора, «кратко / подробно» .flt .f (L230) · Р1 */
+  --size-layout-filter-separator:         1px 18px;             /* разделитель в строке отбора, ширина и высота (L550) */
+  --size-layout-status-bar-height:        26px;                 /* строка состояния (L421) */
+
+  /* --- Шапка месяца --- */
+  --size-month-curtain-height:                   28px;          /* шторка (L157) · Р1 */
+  --size-month-curtain-triangle:                 18px;          /* квадрат ▲/▼ (L162) */
+  --size-month-curtain-collapsed-width-default:  1111px;        /* ширина свёрнутой шторки, пока ширина блока не запомнена (L5905) */
+  --size-month-step-height:                      30px;          /* шаг месяца, вместе с рамкой — 32px (L177) */
+  --size-month-step-number:                      17px;          /* квадрат номера шага (L179) */
+  --size-month-step-icon:                        11px;          /* галочка в номере шага (L180) */
+  --size-month-group-title-height:               22px;          /* заголовок блока шапки .hdr .grp>.gt (L198) */
+  --size-month-cell-height:                      26px;          /* клетка шапки .hdr .c (L204) · Р33 */
+  --size-month-cell-sf-min-height:               28px;          /* клетка счёта-фактуры .hdr .c.sf (L215) · Р33 */
+  --size-month-row-height:                       24px;          /* строка «Вычитается до ОДН» и «Баланс ОДН» (L189, L207) · Р33 */
+  --size-month-odn-width:                        288px;         /* блок «Баланс ОДН» (L188) */
+  --size-month-rest-width:                       392px;         /* блок «Вычитается до ОДН» (L195) */
+  --size-month-input-width:                      96px;          /* поле шапки (L213) */
+  --size-month-input-height:                     22px;          /* поле шапки (L213) · Р2 */
+  --size-month-sf-input-width:                   78px;          /* объём в счёте-фактуре (L221) */
+  --size-month-sf-amount-width:                  96px;          /* сумма в счёте-фактуре (L222) */
+  --size-month-sf-input-height:                  20px;          /* поле счёта-фактуры (L221) · Р2 */
+  --size-month-sf-segment-min-width:             54px;          /* подпись позиции «до 15.07» / «с 16.07» (L220) */
+  --size-month-odn-input-width-planned:          64px;          /* поле «ЭК берёт из ОДН» — по правилу L194; перекрыто · Р3 */
+  --size-month-odn-input-height-planned:         18px;          /* поле «ЭК берёт из ОДН» — по правилу L194; перекрыто · Р3 */
+  --size-month-odn-input-width:                  96px;          /* поле «ЭК берёт из ОДН» — фактически, правило L213 · Р3 */
+  --size-month-odn-input-height:                 22px;          /* поле «ЭК берёт из ОДН» — фактически, правило L213 · Р3 */
+  --size-month-need-water-width:                 60px;          /* «Нужды ЭК», вода (L535) */
+  --size-month-need-electro-width:               68px;          /* «Нужды ЭК», электро (L535) */
+  --size-month-need-heat-width:                  60px;          /* «Нужды ЭК», тепло (L535) */
+  --size-month-month-label-padding:              0 5px;         /* плашка месяца .mon-lab (L201) */
+
+  /* --- Таблицы --- */
+  --size-table-head-row-1:            24px;                     /* шапка пульта, строка групп (L241) */
+  --size-table-head-row-2:            34px;                     /* шапка пульта, строка столбцов; липкий отступ второй строки — 24px (L242) */
+  --size-table-row:                   24px;                     /* строка пульта (L244) */
+  --size-table-report-row:            22px;                     /* строка отчёта table.rt, таблица в группе (L369, L380) */
+  --size-table-sticky-second-left:    76px;                     /* левый отступ закреплённого столбца «Программа» = ширина «№» (L252) */
+  --size-table-report-sticky-offset:  -8px;                     /* липкие шапка и «Итого» в окне отчётов — вплотную к краю (L373) */
+  --size-table-filter-button:         19px;                     /* кнопка ▾ (L307) */
+  --size-table-filter-button-gap:     5px;                      /* отступ ▾ от названия столбца (L307) */
+  --size-table-pay-cell-min-height:   18px;                     /* строка «Поставщику платит» (L276) */
+  --size-table-badge-height:          17px;                     /* плашка .pb (L283) · Р7 */
+  --size-table-tag-height:            16px;                     /* метка .own-tag (L435) · Р7 */
+  --size-table-pill-height:           20px;                     /* пилюля .pill (L356) */
+  --size-table-unit-icon-slot:        14px;                     /* место значка ⚠ / ⇄ перед номером (L2023) */
+  --size-table-sub-row-indent:        19px;                     /* отступ номера подстроки /1, /2 (L2049, L2056) */
+  --size-table-icon:                  14px;                     /* значки по умолчанию (L9337) */
+  --size-table-icon-split:            13px;                     /* значок ⇄ (L9340) */
+  --size-table-icon-section:          16px;                     /* значки разделов, ☰ (L9340–9345) */
+
+  /* --- Столбцы таблицы пульта (drawHead, L9427–9442) --- */
+  --size-column-unit:                76px;                      /* № */
+  --size-column-program:             88px;                      /* Программа */
+  --size-column-owner:               150px;                     /* Собственник */
+  --size-column-area:                70px;                      /* м² */
+  --size-column-meter:               104px;                     /* Счётчик (подробно) */
+  --size-column-reading:             70px;                      /* Прошлое / Текущее (подробно) */
+  --size-column-water-bill:          70px;                      /* В счёт УК, м³ */
+  --size-column-water-supply-sum:    110px;                     /* Водоснабжение, ₸ (подробно) */
+  --size-column-water-drain-sum:     104px;                     /* Водоотведение, ₸ (подробно) */
+  --size-column-pay:                 152px;                     /* Поставщику платит — кратко */
+  --size-column-pay-detail:          172px;                     /* Поставщику платит — подробно */
+  --size-column-electro-bill:        74px;                      /* В счёт УК, кВт·ч */
+  --size-column-electro-sum:         124px;                     /* Сумма, ₸ электро (подробно) */
+  --size-column-heat-bill:           64px;                      /* В счёт УК, Гкал */
+  --size-column-heat-sum:            144px;                     /* Сумма, ₸ тепло (подробно) */
+  --size-column-odn:                 78px;                      /* ОДН — кратко */
+  --size-column-odn-water-supply:    110px;                     /* ОДН водоснабж. (подробно) */
+  --size-column-odn-water-drain:     104px;                     /* ОДН водоотвед. (подробно) */
+  --size-column-odn-electro:         128px;                     /* ОДН электро (подробно) */
+  --size-column-odn-heat:            144px;                     /* ОДН тепло (подробно) */
+  --size-column-total-ku:            86px;                      /* Итого КУ */
+  --size-column-ek:                  88px;                      /* ЭК */
+  --size-column-invoice:             96px;                      /* Квитанция — кратко */
+  --size-column-invoice-detail:      104px;                     /* Квитанция — подробно */
+  --size-column-table-width-brief:   1396px;                    /* ширина таблицы, кратко (14 столбцов) */
+  --size-column-table-width-detail:  2842px;                    /* ширина таблицы, подробно (27 столбцов) */
+
+  /* --- Кнопки и поля --- */
+  --size-control-button-height:             26px;               /* кнопка (L70) · Р1 */
+  --size-control-button-sm-height:          22px;               /* кнопка .sm (L78); кнопка «Копия на Google Диск» (L40) · Р1 */
+  --size-control-button-export-height:      24px;               /* кнопки «Excel / JSON» в «Квитанциях за месяц» .exp-btns (L127) · Р1 */
+  --size-control-menu-item-height:          28px;               /* пункт меню «Ещё ▾» (L84) · Р1 */
+  --size-control-context-item-min-height:   26px;               /* пункт списка .cmenu, растёт по тексту (L299) · Р1 */
+  --size-control-button-sync-apply-height:  30px;               /* «Внести изменения (N)» в сверке (L2849, L3846) · Р1 */
+  --size-control-file-button-height:        26px;               /* «Выбрать файл…» (L130) */
+  --size-control-window-button-height:      22px;               /* — ▢ ✕ в шапке окна (L405) · Р1 */
+  --size-control-input-dialog-height:       26px;               /* поле диалога .reg-dlg, список «Программа» (L99, L3042) · Р2 */
+  --size-control-input-month-height:        24px;               /* поле месяца в переключателе (L67) · Р2 */
+  --size-control-select-filter-height:      24px;               /* списки «Этаж», «Тип», «Строк»; списки окна отчётов (L233, L326) · Р2 */
+  --size-control-report-select-max-width:   240px;              /* список помещений в окне отчётов (L326) */
+  --size-control-date-input-dialog-width:   160px;              /* поле даты в диалогах реестра (L3736, L3040, L3044, L3045) */
+  --size-control-delete-glyph-size:         12px;               /* «×» удалить строку — доходные и форма (L1149, L8390); тарифы — 13px (L986) · Р30 */
+  --size-control-delete-glyph-size-tariff:  13px;               /* «×» в «Тарифы с НДС» (L986, L998) · Р30 */
+
+  /* --- Окна: общие размеры --- */
+  --size-window-bar-min-height:      30px;                      /* шапка окна (L398) */
+  --size-window-grip:                9px 14px;                  /* «ручка» в шапке, ширина и высота (L400) */
+  --size-window-resize-edge:         7px;                       /* рамка растягивания по краю (L409–412) */
+  --size-window-resize-corner:       14px;                      /* рамка растягивания в углу (L413–416) */
+  --size-window-resize-corner-mark:  8px;                       /* уголок справа внизу (L417) */
+  --size-window-min-width:           320px;                     /* наименьшая ширина при растягивании (MINW, L5530) */
+  --size-window-min-height:          120px;                     /* наименьшая высота при растягивании (MINH, L5530) */
+  --size-window-maximized-inset:     4px;                       /* развёрнутое окно: отступ слева и сверху; ширина и высота — экран минус 12px (L5601) */
+  --size-window-fit-margin:          8px;                       /* окно шире экрана сужается до «экран минус 8px» (L4836) */
+  --size-window-fit-edge:            4px;                       /* окно, вылезшее за правый край, сдвигается до отступа 4px (L4838) */
+  --size-window-drag-keep-visible:   120px;                     /* окно не уводится влево больше, чем «ширина минус 120px» (L5518) */
+  --size-window-drag-right-keep:     80px;                      /* левый край окна не дальше «экран минус 80px» (L5518) */
+  --size-window-drag-bottom-keep:    30px;                      /* верх окна не ниже «экран минус 30px» (L5520) */
+
+  /* --- Форма помещения (card-win) --- */
+  --size-window-card-left:        40px;                         /* L578 */
+  --size-window-card-top:         20px;                         /* L578 */
+  --size-window-card-width:       940px;                        /* L578 */
+  --size-window-card-height:      92vh;                         /* L578 */
+  --size-window-card-max-height:  92vh;                         /* L578 */
+
+  /* --- «Квитанции» / «История» (inv-win) --- */
+  --size-window-invoices-left:        1000px;                   /* L597; на узком экране сдвигается (winFit) */
+  --size-window-invoices-top:         20px;                     /* L597 */
+  --size-window-invoices-width:       660px;                    /* L597 */
+  --size-window-invoices-max-height:  92vh;                     /* L597; высота — по содержимому */
+
+  /* --- «Импорт показаний» (imp-win) --- */
+  --size-window-import-left:    120px;                          /* L614 */
+  --size-window-import-top:     30px;                           /* L614 */
+  --size-window-import-width:   1100px;                         /* L614 */
+  --size-window-import-height:  84vh;                           /* L614 */
+
+  /* --- «Закрытие периода» (close-win) --- */
+  --size-window-close-left:        160px;                       /* L629 */
+  --size-window-close-top:         40px;                        /* L629 */
+  --size-window-close-width:       900px;                       /* L629 */
+  --size-window-close-max-height:  84vh;                        /* L629; высота — по содержимому */
+
+  /* --- «Корректировка» (adj-win) --- */
+  --size-window-adjust-left:        120px;                      /* L643 */
+  --size-window-adjust-top:         30px;                       /* L643 */
+  --size-window-adjust-width:       1000px;                     /* L643 */
+  --size-window-adjust-max-height:  88vh;                       /* L643; высота — по содержимому */
+
+  /* --- «Отчёты» (rep-win) --- */
+  --size-window-reports-left:    20px;                          /* L657 */
+  --size-window-reports-top:     14px;                          /* L657 */
+  --size-window-reports-width:   1500px;                        /* L657 */
+  --size-window-reports-height:  90vh;                          /* L657 */
+
+  /* --- «Настройки месяца» (set-win) --- */
+  --size-window-settings-left:        100px;                    /* L686 */
+  --size-window-settings-top:         40px;                     /* L686 */
+  --size-window-settings-width:       1160px;                   /* L686 */
+  --size-window-settings-height:      88vh;                     /* L686 */
+  --size-window-settings-max-height:  88vh;                     /* L686 */
+
+  /* --- Диалоги (.reg-dlg и окна поверх) --- */
+  --size-dialog-width:                 560px;                   /* диалог по умолчанию, по центру по горизонтали (L91) */
+  --size-dialog-top:                   90px;                    /* отступ сверху по умолчанию (L91) */
+  --size-dialog-max-width:             calc(100vw - 32px);      /* не шире экрана (L91) */
+  --size-dialog-rz-width:              740px;                   /* «Помещение … — разграничение» (L3200) */
+  --size-dialog-rz-max-height:         calc(100vh - 110px);     /* L3200 */
+  --size-dialog-files-width:           680px;                   /* «Вложения и описание» (L3545) */
+  --size-dialog-files-top:             70px;                    /* L3545 */
+  --size-dialog-files-max-height:      calc(100vh - 90px);      /* L3545 */
+  --size-dialog-confirm-top:           130px;                   /* «Вы уверены?», ввод текста (L3683, L3697) */
+  --size-dialog-pick-top:              100px;                   /* выбор из списка («Вернуть копию…») (L3711) */
+  --size-dialog-pick-max-width:        640px;                   /* L3711 */
+  --size-dialog-pick-list-max-height:  52vh;                    /* список вариантов (L3714) */
+  --size-dialog-refund-top:            120px;                   /* «Возвращено деньгами» (L6217) */
+  --size-dialog-refund-max-width:      580px;                   /* L6217 */
+  --size-dialog-offset-top:            120px;                   /* «Зачесть переплату» (L6273) */
+  --size-dialog-offset-max-width:      560px;                   /* L6273 */
+  --size-dialog-overpay-top:           110px;                   /* «Перерасчёт оформлен — у собственника переплата» (L6356) */
+  --size-dialog-overpay-max-width:     640px;                   /* L6356 */
+  --size-dialog-clean-top:             90px;                    /* «Очистить данные месяцев» (L8130) */
+  --size-dialog-clean-width:           760px;                   /* L8130 */
+  --size-dialog-clean-max-height:      calc(100vh - 140px);     /* L8130 */
+  --size-dialog-ask-min-width:         460px;                   /* «Оставить изменения?» (L8281) */
+  --size-dialog-ask-max-width:         600px;                   /* L8281 */
+  --size-dialog-reminder-width:        360px;                   /* «Пора закрыть период» (L6040) */
+  --size-dialog-reminder-top:          60px;                    /* L6040 */
+  --size-dialog-reminder-right:        20px;                    /* L6040 */
+  --size-dialog-contacts-grid:         1.4fr 1fr 1fr 1fr auto;  /* строка представителя в «контакты…» (L46) */
+  --size-dialog-thumbnail:             48px;                    /* миниатюра вложения и значок файла (L123–124) */
+
+  /* --- Меню и списки --- */
+  --size-menu-more-min-width:     240px;                        /* «Ещё ▾» пульта (L82) · Р28 */
+  --size-menu-more-top:           34px;                         /* «Ещё ▾» пульта — от верха командной панели (L82) */
+  --size-menu-context-width:      360px;                        /* список у клетки, «Кто работает» .cmenu (L298) · Р28 */
+  --size-menu-right-click-width:  340px;                        /* меню правой кнопки #ctx-menu (L102) · Р28 */
+  --size-menu-card-more-width:    300px;                        /* «Ещё ▾» формы помещения (L9304) · Р28 */
+  --size-menu-filter-width:       280px;                        /* фильтр столбца .fmenu (L313) · Р28 */
+  --size-menu-filter-max-height:  70vh;                         /* фильтр столбца (L313) */
+  --size-menu-mark-width:         12px;                         /* место галочки ✓ в пункте (L302) */
+
+  /* --- Окно «Отчёты» --- */
+  --size-report-tree-width:                  236px;             /* дерево отчётов (L329) */
+  --size-report-group-title-height:          28px;              /* заголовок группы .grp .gt в отчётах и «Настройки месяца» — фактически, вторая запись (L476) · Р22 */
+  --size-report-group-title-height-planned:  24px;              /* заголовок группы .grp .gt — первая запись (L378), перекрыта · Р22 */
+  --size-report-tile-min-width:              150px;             /* плитка (L360) */
+  --size-report-kv-min-width:                150px;             /* пара «подпись: значение» .kv (L382) */
+  --size-report-owner-max-width:             300px;             /* ФИО в реестре .reg-own (L125) */
+  --size-report-sync-owner-max-width:        260px;             /* ФИО в таблице сверки (L149) */
+  --size-report-sync-summary-min-width:      460px;             /* таблица «Какие программы действуют» (L2826) */
+
+  /* --- Форма помещения --- */
+  --size-card-tabs-height:           34px;                      /* полоса вкладок .ctabs (L464) */
+  --size-card-tab-offset:            5px;                       /* отступ вкладки сверху (L465) */
+  --size-card-tab-active-lift:       2px;                       /* открытая вкладка опущена на 2px (L468) */
+  --size-card-month-grid:            220px 1fr 280px;           /* строка «Договоры за месяц» .cm-r (L460) */
+  --size-card-owner-fio-max-width:   112px;                     /* ФИО в полосе владения «Истории» (L442) */
+  --size-card-meter-reading-input:   72px;                      /* поле показания (L8489, L8491) */
+  --size-card-meter-serial-input:    88px;                      /* поле серийного номера (L8484) */
+  --size-card-meter-coef-input:      40px;                      /* поле коэффициента (L8487) */
+  --size-card-meter-date-input:      112px;                     /* поле даты установки / снятия, показание на дату передачи (L8476, L8522) */
+  --size-card-owner-fio-input:       250px;                     /* поле ФИО собственника (L8414) */
+  --size-card-program-number-input:  120px;                     /* поле № договора управления (L8382) */
+  --size-card-rz-columns:            8% 9% 12% 8% 9% 11% 5% 8% 11|15% 4% 11% 4%; /* столбцы таблицы «Договоры разграничения»; «На расчётный период» — 11% в правке, 15% в просмотре (L8653) */
+
+  /* --- «Настройки месяца» --- */
+  --size-settings-tariff-service-min:  120px;                   /* Услуга (L710) */
+  --size-settings-tariff-base:         72px;                    /* Базовый, Итого (L710) */
+  --size-settings-tariff-vat:          40px;                    /* НДС (L710) */
+  --size-settings-tariff-date:         110px;                   /* С, По (L710) */
+  --size-settings-tariff-delete:       20px;                    /* столбец «×» (L710, L713) */
+  --size-settings-tariff-input-base:   64px;                    /* поле «Базовый» (L981) */
+  --size-settings-tariff-input-vat:    36px;                    /* поле «НДС» (L982) */
+  --size-settings-tariff-input-date:   96px;                    /* поле даты (L984) */
+  --size-settings-ext-volume-input:    58px;                    /* «Объём» доходных (L1147) */
+  --size-settings-amount-input:        78px;                    /* «сумма по с/ф», «Общая площадь здания» (L2160, L2207) */
+  --size-settings-timeline-width:      480px;                   /* шкала тарифов: ширина, подписи — 92px, строка — 16px (L711, L1099, L1106) */
+
+  /* ========== space · Отступы ========================================================================= */
+
+  /* --- Шкала (значения, которые встречаются в пульте) --- */
+  --space-scale-0:   0;
+  --space-scale-1:   1px;
+  --space-scale-2:   2px;
+  --space-scale-3:   3px;
+  --space-scale-4:   4px;
+  --space-scale-5:   5px;
+  --space-scale-6:   6px;
+  --space-scale-7:   7px;
+  --space-scale-8:   8px;
+  --space-scale-9:   9px;
+  --space-scale-10:  10px;
+  --space-scale-12:  12px;
+  --space-scale-14:  14px;
+  --space-scale-16:  16px;
+  --space-scale-18:  18px;
+  --space-scale-22:  22px;
+  --space-scale-24:  24px;
+
+  /* --- Промежутки между элементами --- */
+  --space-gap-topbar:              10px;                        /* верхняя панель (L29) */
+  --space-gap-section-item:        8px;                         /* значок и подпись раздела (L51) */
+  --space-gap-tabs-strip-tab:      8px;                         /* название и × вкладки окна (L56) */
+  --space-gap-title-row:           12px;                        /* строка заголовка (L61) */
+  --space-gap-command-bar:         6px;                         /* командная панель (L68) */
+  --space-gap-button-inner:        6px;                         /* значок и подпись кнопки (L70) */
+  --space-gap-month-blocks:        6px;                         /* блоки шапки месяца; шаги — с отступом 6px снизу (L175, L185) */
+  --space-gap-step:                8px;                         /* номер, название, состояние шага (L177) */
+  --space-gap-filter-row:          6px;                         /* строка отбора (L228) */
+  --space-gap-tiles:               8px;                         /* плитки (L359) */
+  --space-gap-dialog:              8px;                         /* строки диалога (L92) */
+  --space-gap-dialog-buttons:      8px;                         /* кнопки диалога (L98) */
+  --space-gap-window-bar:          8px;                         /* шапка окна (L398) */
+  --space-gap-window-bar-buttons:  4px;                         /* кнопки в шапке окна (L404) */
+  --space-gap-status-bar:          16px;                        /* поля строки состояния (L421) */
+  --space-gap-kv:                  2px 22px;                    /* пары «подпись: значение» (L381) */
+  --space-gap-two-columns:         24px;                        /* две колонки «Настройки месяца» (L478) */
+  --space-gap-cols2:               10px;                        /* две колонки «Расшифровки» (L383) */
+  --space-gap-passport:            8px;                         /* колонки паспорта (L446) */
+  --space-gap-tabs:                4px;                         /* вкладки формы (L464) */
+
+  /* --- Внутренние отступы --- */
+  --space-padding-button:                0 12px;                /* кнопка (L70) */
+  --space-padding-button-sm:             0 8px;                 /* кнопка .sm (L78) */
+  --space-padding-button-export:         0 10px;                /* кнопки «Excel / JSON» (L127) */
+  --space-padding-menu-item:             0 14px;                /* пункт «Ещё ▾» (L84) */
+  --space-padding-context-item:          3px 10px;              /* пункт списка .cmenu (L299) */
+  --space-padding-input:                 2px 5px;               /* поле ввода (L22) */
+  --space-padding-input-sf:              0 4px;                 /* поле счёта-фактуры (L221) */
+  --space-padding-input-card:            1px 3px;               /* поле формы помещения в правке (L8312) */
+  --space-padding-cell:                  0 5px;                 /* ячейка пульта (L244) */
+  --space-padding-head-cell:             2px 6px;               /* ячейка шапки пульта (L240) */
+  --space-padding-ref-cell:              2px 6px;               /* ячейка table.r (L391) */
+  --space-padding-ref-head-cell:         3px 6px;               /* шапка table.r (L390) */
+  --space-padding-sync-cell:             3px 7px;               /* ячейка сверки (L144) */
+  --space-padding-pay-water-electro:     1px 5px;               /* клетка «Поставщику платит», вода и электро (L1852) · Р6 */
+  --space-padding-pay-heat:              2px 5px;               /* клетка «Поставщику платит», тепло (L1874) · Р6 */
+  --space-padding-badge:                 0 6px;                 /* плашка .pb, метка .own-tag (L283, L435) */
+  --space-padding-pill:                  0 8px;                 /* пилюля .pill (L356) */
+  --space-padding-note:                  5px 10px;              /* .note (L87) */
+  --space-padding-tile:                  5px 9px 6px;           /* плитка (L360) */
+  --space-padding-section-item:          4px 10px 4px 12px;     /* пункт раздела (L51) */
+  --space-padding-tabs-strip:            0 6px;                 /* полоса окон (L55) */
+  --space-padding-tabs-strip-tab:        0 12px;                /* вкладка окна (L56) */
+  --space-padding-card-tab:              0 16px;                /* вкладка формы (L465) */
+  --space-padding-form:                  8px 10px 0;            /* форма расчёта .form (L60) */
+  --space-padding-curtain:               0 12px;                /* шторка (L157) */
+  --space-padding-step:                  0 10px;                /* шаг (L177) */
+  --space-padding-month-cell:            0 8px;                 /* клетка шапки месяца (L204) */
+  --space-padding-month-sf-cell:         3px 8px 4px;           /* клетка счёта-фактуры (L215) */
+  --space-padding-window-bar:            4px 8px 4px 10px;      /* шапка окна (L397) */
+  --space-padding-window-body-card:      10px;                  /* тело формы помещения и «Квитанций» (L593, L606) · Р24 */
+  --space-padding-window-body-tools:     8px 10px;              /* тело импорта, закрытия, корректировки; область отчёта (L623, L637, L651, L353) · Р24 */
+  --space-padding-window-body-settings:  10px 14px;             /* тело «Настройки месяца» (L695) · Р24 */
+  --space-padding-dialog:                12px 14px;             /* диалог .reg-dlg (L92) · Р24 */
+  --space-padding-ask-body:              12px;                  /* текст «Оставить изменения?» (L8283) · Р24 */
+  --space-padding-ask-head:              6px 12px;              /* шапка «Оставить изменения?» (L8282) */
+  --space-padding-ask-buttons:           8px 12px;              /* кнопки «Оставить изменения?» (L8288) */
+  --space-padding-reminder:              10px 12px;             /* «Пора закрыть период» (L6040) */
+  --space-padding-report-tools:          6px 10px;              /* командная панель отчётов (L324) */
+  --space-padding-report-tree-row:       4px 10px;              /* пункт дерева отчётов (L347) */
+  --space-padding-report-tree-group:     5px 10px 4px 7px;      /* раздел дерева (L332) */
+  --space-padding-report-tree-dept:      5px 10px;              /* заголовок отдела (L335) */
+  --space-padding-filter-menu-row:       2px 9px;               /* строка списка фильтра (L316) */
+  --space-padding-filter-menu-block:     6px 9px;               /* поле и кнопки фильтра (L319, L322) */
+  --space-padding-filter-menu-title:     5px 9px;               /* заголовок фильтра (L314) */
+  --space-padding-status-bar:            0 12px;                /* строка состояния (L421) */
+  --space-padding-topbar:                0 10px;                /* верхняя панель (L29) */
+  --space-padding-sync-summary:          8px 12px;              /* сводка сверки (L132) */
+  --space-padding-sync-done:             7px 10px;              /* сообщение «Внесено…» (L138) */
+  --space-padding-passport-column:       6px 8px;               /* колонка паспорта (L447) */
+  --space-padding-month-contract-row:    3px 10px;              /* строка «Договоры за месяц» (L460) */
+  --space-padding-delete-box:            5px 8px;               /* «Помечено на удаление» в форме (L341) */
+  --space-padding-warn-block:            5px 8px;               /* жёлтый блок реестра (L2977, L3737) */
+  --space-padding-invoice-block:         6px;                   /* рамка квитанции (L7250, L7273, L7392, L6898) */
+
+  /* --- Внешние отступы блоков --- */
+  --space-margin-command-bar-bottom:    8px;                    /* под командной панелью (L68) */
+  --space-margin-note-bottom:           8px;                    /* под .note (L87) */
+  --space-margin-monthbar-bottom:       8px;                    /* под шапкой месяца (L89) */
+  --space-margin-curtain-bottom:        6px;                    /* под шторкой (L157) */
+  --space-margin-steps-bottom:          6px;                    /* под шагами (L175) */
+  --space-margin-filter-row-bottom:     6px;                    /* под строкой отбора (L228) */
+  --space-margin-group-bottom-planned:  8px;                    /* под группой .grp — первая запись (L377), перекрыта · Р22 */
+  --space-margin-group-bottom:          14px;                   /* под группой .grp — вторая запись, действует (L475); достаётся и блокам шапки месяца · Р22 */
+  --space-margin-group-title-bottom:    6px;                    /* под заголовком группы .grp .gt — вторая запись (L476); достаётся и заголовкам блоков шапки месяца · Р22 */
+  --space-margin-report-tree-group:     8px 0 2px;              /* раздел дерева отчётов (L332) */
+  --space-margin-report-tree-dept:      10px 0 0;               /* заголовок отдела (L335) */
+  --space-margin-tabs:                  2px 0 8px;              /* полоса вкладок формы (L464) */
+
+  /* ========== border · Линии и рамки =================================================================== */
+
+  /* --- Толщина --- */
+  --border-width-thin:         1px;                             /* обычная линия */
+  --border-width-strong:       2px;                             /* рамка фокуса, «в счёт УК», «через УК», «Итого», рамка квитанции, «Вы уверены?», зона перетаскивания (L23, L264, L284, L3683) */
+  --border-width-stripe:       3px;                             /* полоса активного раздела и пункта дерева, верх открытой вкладки, полоса владения (L51, L347, L468, L440) */
+  --border-width-stripe-done:  4px;                             /* левая полоса сообщения «Внесено…» (L138) */
+  --border-width-stripe-wait:  5px;                             /* левая полоса «в счёт УК» без акта (L285) */
+
+  /* --- Рамки целиком --- */
+  --border-style-default:            1px solid var(--color-line-default); /* блоки, поля, кнопки (L22, L70, L186) */
+  --border-style-light:              1px solid var(--color-line-light); /* сетка таблиц (L244, L391) */
+  --border-style-lighter:            1px solid var(--color-line-lighter); /* строки «Договоры за месяц» (L460) */
+  --border-style-strong:             1px solid var(--color-line-strong); /* диалоги, шторка, кнопка-файл, низ шапки окна (L92, L130, L158, L398) */
+  --border-style-total:              2px solid var(--color-line-default); /* «Итого» пульта, квитанции, формы (L264, L7267, L8780) · Р21 */
+  --border-style-total-report:       2px solid var(--color-line-light); /* «Итого» отчётов; граница ресурсов в договорах разграничения (L370, L471) · Р21 */
+  --border-style-total-history:      2px solid var(--color-text-primary); /* «ВСЕГО НАЧИСЛЕНО» в «Истории» (L7675) · Р21 */
+  --border-style-focus:              2px solid var(--color-text-link); /* рамка фокуса с клавиатуры, отступ 1px (L23, L142, L161) · Р13 */
+  --border-style-focus-month-input:  1px solid var(--color-accent-default); /* поле шапки месяца в фокусе, без отступа (L210) · Р13 */
+  --border-style-need:               1px solid var(--color-status-bad); /* поле «нужно заполнить» (L227, L1147, L2160, L8679) */
+  --border-style-badge-uk:           2px solid var(--color-badge-uk-border); /* плашки «в счёт УК» и «через УК» (L284, L289) */
+  --border-style-badge-wait:         5px solid var(--color-badge-wait-stripe); /* левая полоса «в счёт УК» без акта (L285) */
+  --border-style-manual:             dashed;                    /* ручная пометка: плашка обведена пунктиром (L294) */
+  --border-style-delete-box:         1px dashed var(--color-status-bad); /* «Помечено на удаление» в форме (L341) */
+  --border-style-drop-zone:          2px dashed var(--color-files-drop-border); /* зона перетаскивания файлов (L120) */
+  --border-style-owner-change:       2px solid var(--color-status-info); /* синяя вертикальная линия — месяц, с которого помещение перешло (L430) */
+  --border-style-link-dotted:        dotted;                    /* подчёркивание ссылки-перехода a.go, a.act-do (L169–170); объём с долей счёта поставщика (L2315) */
+  --border-style-note-dashed:        1px dashed var(--color-line-default); /* «Как посчитано», «Для оператора» в квитанции (L7099, L7239) */
+  --border-style-split-dashed:       1px dashed var(--color-line-light); /* разделитель частей месяца в клетке формы (L7739, L8556) */
+
+  /* ========== radius · Скругления ====================================================================== */
+  --radius-none:        0;                                      /* поля, шторка, пункты меню (L22, L84, L157) */
+  --radius-s:           2px;                                    /* кнопки, плашки, кнопки отбора, плашка месяца, кнопки окна (L70, L201, L230, L283, L405, L435) */
+  --radius-m:           3px;                                    /* кнопка фильтра ▾ (L308) */
+  --radius-tab:         3px 3px 0 0;                            /* вкладка формы (L466) */
+  --radius-pill:        10px;                                   /* пилюля .pill в отчётах (L356) · Р8 */
+  --radius-pill-print:  8px;                                    /* пилюля при печати (L3936) · Р8 */
+
+  /* ========== shadow · Тени ============================================================================ */
+  --shadow-menu:           0 4px 14px var(--color-shadow-menu); /* «Ещё ▾» (L82) · Р25 */
+  --shadow-popup:          0 4px 14px var(--color-shadow-popup); /* списки у клетки, меню правой кнопки, фильтры (L298, L313) · Р25 */
+  --shadow-window:         0 6px 24px var(--color-shadow-popup); /* окно .win (L395) · Р25 */
+  --shadow-dialog:         0 8px 28px var(--color-shadow-dialog); /* диалог .reg-dlg (L92) · Р25 */
+  --shadow-modal:          0 8px 30px var(--color-shadow-modal); /* «Оставить изменения?» (L8281) · Р25 */
+  --shadow-reminder:       0 4px 18px var(--color-shadow-popup); /* «Пора закрыть период» (L6040) · Р25 */
+  --shadow-filter-button:  0 1px 0 var(--color-shadow-hairline); /* кнопка ▾ (L308) */
+  --shadow-pay-hover:      inset 0 0 0 1px var(--color-line-light); /* клетка «Поставщику платит» при наведении (L279) */
+  --shadow-tree-stripe:    inset 3px 0 0;                       /* полоса отдела у пункта дерева отчётов, цвет — color.report-tree.row-stripe-* (L346) */
+  --shadow-owner-line:     inset 0 -3px 0;                      /* полоса владения в «Истории», цвет — color.owner.*-line (L440–441) */
+
+  /* ========== z · Слои (z-index) ================================================================== */
+  --z-table-fixed-cell:       1;                                /* закреплённые столбцы, строка «Итого» (L250, L252, L264) */
+  --z-table-head:             2;                                /* шапка таблицы; «Итого» в закреплённых столбцах (L240, L265, L367) */
+  --z-table-head-fixed:       3;                                /* угол шапки над закреплёнными столбцами (L253) */
+  --z-resize-handle:          5;                                /* рамки растягивания окна (L408) */
+  --z-more-menu:              60;                               /* меню «Ещё ▾» пульта (L82) */
+  --z-window-layer-base:      990;                              /* обёртки окон: 990 + место в порядке слоёв, до 995 (winModalTop, L4821) */
+  --z-window-layer-settings:  996;                              /* «Настройки месяца» при загрузке (L685) */
+  --z-window-layer-tools:     997;                              /* импорт, закрытие, корректировка при загрузке (L613, L628, L642) */
+  --z-window-layer-reports:   998;                              /* «Отчёты» при загрузке (L656) */
+  --z-window-layer-card:      999;                              /* форма помещения и «Квитанции» при загрузке (L577) */
+  --z-window-start:           1000;                             /* окно внутри обёртки: растёт с каждым подъёмом (WIN_Z, L4810) */
+  --z-popup:                  1400;                             /* списки .cmenu, фильтры .fmenu, «Кто работает», «Ещё ▾» формы (L298, L313) */
+  --z-modal-ask:              1500;                             /* «Оставить изменения?» (L8280) */
+  --z-reminder:               1500;                             /* «Пора закрыть период» (L6040) */
+  --z-loading:                2000;                             /* полоса загрузки и экран ошибки (L9731, L9739) */
+  --z-dialog:                 3000;                             /* диалоги .reg-dlg, «Очистить данные месяцев» (L91, L8130) */
+  --z-dialog-over:            3050;                             /* «Вложения и описание», зачёт, возврат, «Перерасчёт оформлен» (L3545, L6217, L6273, L6356) */
+  --z-confirm:                3100;                             /* «Вы уверены?», ввод текста, выбор из списка (L3683, L3697, L3711) */
+  --z-context-menu:           3200;                             /* меню правой кнопки #ctx-menu (L102) */
+}
+
+/* ----------------------------------------------------------------------------------------------------
+ * Совместимость: имена переменных из :root пульта (L8–13) → токены. Нужны, чтобы перенести готовые
+ * стили пульта без замены имён. В новых компонентах — только токены выше.
+ * ---------------------------------------------------------------------------------------------------- */
+:root{
+  --ink:       var(--color-text-primary);
+  --ink2:      var(--color-text-secondary);
+  --ink3:      var(--color-text-muted);
+  --line:      var(--color-line-default);
+  --line2:     var(--color-line-light);
+  --line3:     var(--color-line-lighter);
+  --line-hard: var(--color-line-strong);
+  --bg:        var(--color-bg-page);
+  --sunk:      var(--color-bg-sunken);
+  --panel:     var(--color-bg-panel);
+  --panel2:    var(--color-bg-panel-2);
+  --acc:       var(--color-accent-default);
+  --acc-d:     var(--color-accent-dark);
+  --acc-s:     var(--color-accent-soft);
+  --ok:        var(--color-status-ok);
+  --bad:       var(--color-status-bad);
+  --bad-s:     var(--color-status-bad-soft);
+  --warn:      var(--color-status-warn);
+  --warn-s:    var(--color-status-warn-soft);
+  --info:      var(--color-status-info);
+  --info-s:    var(--color-status-info-soft);
+  --in:        var(--color-input-bg);
+  --in-l:      var(--color-input-border);
+  --in-f:      var(--color-input-bg-focus);
+  --cur:       var(--color-current-bg);
+  --cur-l:     var(--color-current-border);
+  --def:       var(--color-default-bg);
+  --def-l:     var(--color-default-border);
+  --link:      var(--color-text-link);
+  --fs:        var(--font-role-body);
+  --fs-t:      var(--font-role-table);
+  --fs-s:      var(--font-role-mini);
+}
